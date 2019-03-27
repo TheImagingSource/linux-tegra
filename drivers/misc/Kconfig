@@ -179,6 +179,16 @@ config TIFM_7XX1
 	  To compile this driver as a module, choose M here: the module will
 	  be called tifm_7xx1.
 
+config TIS_FPDLINK
+	tristate "The Imaging Source FPDLink support"
+	depends on I2C
+	help
+	  This option enables support for The Imaging Source FPDLink camera
+	  connector.
+
+	  To compile this driver as a module, chose M here: the module will
+	  be called tis-fpdlink.
+
 config ICS932S401
 	tristate "Integrated Circuits ICS932S401"
 	depends on I2C
