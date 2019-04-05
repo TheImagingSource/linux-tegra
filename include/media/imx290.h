@@ -17,7 +17,7 @@
 #ifndef __IMX290_H__
 #define __IMX290_H__
 
-#include <linux/ioctl.h>  		/* For IOCTL macros */
+#include <linux/ioctl.h>	/* For IOCTL macros */
 #include <media/nvc.h>
 #include <media/nvc_image.h>
 
@@ -30,8 +30,8 @@
 #define IMX290_IOCTL_TEST_PATTERN           _IOW('o', 7, \
 						 enum imx290_test_pattern)
 #define IMX290_IOCTL_SET_GROUP_HOLD         _IOW('o', 8, struct imx290_ae)
-/* IOCTL to set the operating mode of camera.
- * This can be either stereo , leftOnly or rightOnly */
+/* IOCTL to set the operating mode of camera. */
+/* This can be either stereo , leftOnly or rightOnly */
 #define IMX290_IOCTL_SET_CAMERA_MODE        _IOW('o', 10, __u32)
 #define IMX290_IOCTL_SYNC_SENSORS           _IOW('o', 11, __u32)
 #define IMX290_IOCTL_GET_FUSEID             _IOR('o', 12, struct nvc_fuseid)
@@ -81,7 +81,7 @@
 #define IMX290_GROUP_HOLD_ADDR				0x3001 /* REG HOLD */
 #define IMX290_ANALOG_GAIN_ADDR 			0x3014 /* GAIN ADDR */
 
-#define IMX290_STANDBY_REG				0x3000
+#define IMX290_STANDBY_REG	0x3000
 
 struct imx290_mode {
 	int res_x;

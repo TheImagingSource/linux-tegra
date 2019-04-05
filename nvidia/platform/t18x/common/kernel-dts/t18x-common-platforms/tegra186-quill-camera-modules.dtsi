@@ -22,6 +22,7 @@
 
 
 #include <t18x-tis-modules/tegra186-camera-imx290.dtsi>
+//#include <t18x-tis-modules/tegra186-camera-imx219.dtsi>
 
 
 // #define CAM0_RST_L	TEGRA_MAIN_GPIO(R, 5)

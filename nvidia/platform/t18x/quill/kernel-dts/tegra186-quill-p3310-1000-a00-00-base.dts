@@ -16,6 +16,7 @@
 #include <t18x-common-platforms/tegra186-quill-common-p3310-1000-a00.dtsi>
 #include <t18x-common-platforms/tegra186-quill-power-tree-p3310-1000-a00-00.dtsi>
 #include <t18x-common-platforms/tegra186-quill-camera-modules.dtsi>
+//#include "t18x-common-platforms/tegra186-quill-camera-imx290-a00.dtsi"
 #include <t18x-common-modules/tegra186-display-e3320-1000-a00.dtsi>
 
 #include <t18x-tis-modules/tegra186-tis-fpdlink.dtsi>

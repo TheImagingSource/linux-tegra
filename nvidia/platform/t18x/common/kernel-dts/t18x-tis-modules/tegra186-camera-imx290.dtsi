@@ -33,6 +33,7 @@
 					reg = <0>;
 					status = "okay";
 					liimx290_vi_in0: endpoint {
+						status = "okay";
 						csi-port = <2>;
 						bus-width = <2>;
 						remote-endpoint = <&liimx290_csi_out0>;
@@ -54,6 +55,7 @@
 						reg = <0>;
 						status = "okay";
 						liimx290_csi_in0: endpoint@0 {
+							status = "okay";
 							csi-port = <2>;
 							bus-width = <2>;
 							remote-endpoint = <&liimx290_imx290_out0>;
@@ -63,6 +65,7 @@
 						reg = <1>;
 						status = "okay";
 						liimx290_csi_out0: endpoint@1 {
+							status = "okay";
 							remote-endpoint = <&liimx290_vi_in0>;
 						};
 					};
@@ -145,7 +148,7 @@
 				min_exp_time = "14.8";
 				max_exp_time = "16650";
 
-				embedded_metadata_height = "2";
+				embedded_metadata_height = "1";
 			};
 
 			ports {
@@ -198,11 +201,11 @@
 		*/
 		num_csi_lanes = <2>;
 		max_lane_speed = <1500000>;
-		min_bits_per_pixel = <10>;
+		min_bits_per_pixel = <12>;
 		vi_peak_byte_per_pixel = <2>;
 		vi_bw_margin_pct = <25>;
 		max_pixel_rate = <750000>;
-		isp_peak_byte_per_pixel = <5>;
+		isp_peak_byte_per_pixel = <2>;
 		isp_bw_margin_pct = <25>;
 
 		/**
@@ -215,7 +218,7 @@
 		 */
 		modules {
 			module0 {
-				badge = "imx290_top_liimx290";
+				badge = "imx290_top_tisimx290";
 				position = "top";
 				orientation = "1";
 				status = "okay";
@@ -227,7 +230,7 @@
 					/* Declare the device-tree hierarchy to driver instance */
 					proc-device-tree = "/proc/device-tree/i2c@3180000/imx290_a@1a";
 					status = "okay";
-				};
+				};	
 			};
 		};
 	};

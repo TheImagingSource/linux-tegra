@@ -211,10 +211,10 @@ static int imx219_power_on(struct camera_common_data *s_data)
 
 	dev_dbg(&priv->i2c_client->dev, "%s: power on\n", __func__);
 
-	if (gpio_cansleep(pw->reset_gpio))
-		gpio_set_value_cansleep(pw->reset_gpio, 0);
-	else
-		gpio_set_value(pw->reset_gpio, 0);
+	// if (gpio_cansleep(pw->reset_gpio))
+	// 	gpio_set_value_cansleep(pw->reset_gpio, 0);
+	// else
+	// 	gpio_set_value(pw->reset_gpio, 0);
 	usleep_range(10, 20);
 
 	if (pw->avdd)
@@ -233,10 +233,10 @@ static int imx219_power_on(struct camera_common_data *s_data)
 		goto imx219_dvdd_fail;
 
 	usleep_range(1, 2);
-	if (gpio_cansleep(pw->reset_gpio))
-		gpio_set_value_cansleep(pw->reset_gpio, 1);
-	else
-		gpio_set_value(pw->reset_gpio, 1);
+	// if (gpio_cansleep(pw->reset_gpio))
+	// 	gpio_set_value_cansleep(pw->reset_gpio, 1);
+	// else
+	// 	gpio_set_value(pw->reset_gpio, 1);
 
 	usleep_range(1, 2);
 	imx219_mclk_enable(pw);
@@ -322,15 +322,15 @@ static int imx219_power_get(struct imx219 *priv)
 		return PTR_ERR(pw->mclk);
 	}
 
-	/* ananlog 2.7v */
-	err |= camera_common_regulator_get(&priv->i2c_client->dev,
-			&pw->avdd, pdata->regulators.avdd);
-	/* digital 1.2v */
-	err |= camera_common_regulator_get(&priv->i2c_client->dev,
-			&pw->dvdd, pdata->regulators.dvdd);
-	/* IO 1.8v */
-	err |= camera_common_regulator_get(&priv->i2c_client->dev,
-			&pw->iovdd, pdata->regulators.iovdd);
+	// /* ananlog 2.7v */
+	// err |= camera_common_regulator_get(&priv->i2c_client->dev,
+	// 		&pw->avdd, pdata->regulators.avdd);
+	// /* digital 1.2v */
+	// err |= camera_common_regulator_get(&priv->i2c_client->dev,
+	// 		&pw->dvdd, pdata->regulators.dvdd);
+	// /* IO 1.8v */
+	// err |= camera_common_regulator_get(&priv->i2c_client->dev,
+	// 		&pw->iovdd, pdata->regulators.iovdd);
 
 	if (!err)
 		pw->reset_gpio = pdata->reset_gpio;
