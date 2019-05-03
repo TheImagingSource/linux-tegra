@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2017, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "tegra210-camera-imx290-a00.dtsi"
+
+
+#define CAM0_RST_L	TEGRA_GPIO(S, 4)
+#define CAM0_PWDN	TEGRA_GPIO(S, 7)
+
+/* camera control gpio definitions */
+
+/ {
+	gpio@6000d000 {
+		camera-control-output-low {
+			gpio-hog;
+			output-low;
+			gpios = <CAM0_RST_L 0 CAM0_PWDN 0>;
+			label = "cam0-rst", "cam0-pwdn";
+		};
+	};
+	host1x {
+		i2c@546c0000 {
+			imx290_a@1a {
+				/* Define any required hw resources needed by driver */
+				/* ie. clocks, io pins, power sources */
+				clocks = <&tegra_car TEGRA210_CLK_CLK_OUT_3>;
+				clock-names = "clk_out_3";
+				clock-frequency = <74250000>;
+				mclk = "clk_out_3";
+				reset-gpios = <&gpio CAM0_RST_L GPIO_ACTIVE_HIGH>;
+				pwdn-gpios = <&gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+				vana-supply = <&en_vdd_cam_hv_2v8>;
+				vif-supply = <&en_vdd_cam>;
+				vdig-supply = <&en_vdd_cam_1v2>;
+			};
+		};
+	};
+};

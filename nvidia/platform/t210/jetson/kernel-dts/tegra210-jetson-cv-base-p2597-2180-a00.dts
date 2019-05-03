@@ -25,7 +25,14 @@
 #include "jetson-platforms/tegra210-jetson-cv-sdmmc-drv-p2597-2180-a00.dtsi"
 #include "jetson-platforms/tegra210-jetson-cv-prods.dtsi"
 #include "jetson-platforms/tegra210-comms-p2530-0930.dtsi"
-#include "jetson-platforms/tegra210-jetson-cv-camera-modules.dtsi"
+//#include "jetson-platforms/tegra210-jetson-cv-camera-modules.dtsi"
+
+#include "jetson-platforms/tegra210-tis-fpdlink.dtsi"
+
+//#include "jetson-platforms/tegra210-camera-imx219-a00.dtsi"
+//#include "jetson-platforms/tegra210-jetson-cv-camera-imx290-a00.dtsi"
+#include "jetson-platforms/tegra210-camera-imx290-imx219.dtsi"
+
 #include "jetson-platforms/tegra210-pwm-fan-p2530-0930.dtsi"
 #include <panels/panel-a-wuxga-8-0.dtsi>
 #include <panels/panel-a-edp-1080p-14-0.dtsi>
@@ -47,7 +54,7 @@
 #include <t210-common-platforms/tegra210-cpufreq.dtsi>
 #include "jetson-platforms/tegra210-jetson-cv-super-module-e2614.dtsi"
 #include "jetson-plugin-manager/tegra210-jetson-cv-eeprom-manager.dtsi"
-#include "jetson-plugin-manager/tegra210-jetson-cv-camera-plugin-manager.dtsi"
+//#include "jetson-plugin-manager/tegra210-jetson-cv-camera-plugin-manager.dtsi"
 #include "jetson-plugin-manager/tegra210-jetson-cv-plugin-manager.dtsi"
 
 / {

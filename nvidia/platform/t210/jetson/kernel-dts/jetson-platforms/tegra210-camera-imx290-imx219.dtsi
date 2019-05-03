@@ -1,0 +1,355 @@
+/*
+ * Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <dt-bindings/media/camera.h>
+#include <dt-bindings/platform/t210/t210.h>
+
+#define CAM0_RST_L	TEGRA_GPIO(S, 4)
+#define CAM0_PWDN	TEGRA_GPIO(S, 7)
+
+/ {
+	host1x {
+		vi {
+			num-channels = <2>;
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				port@0 {
+					reg = <0>;
+					liimx290_vi_in0: endpoint {
+						csi-port = <2>;
+						bus-width = <2>;
+						remote-endpoint = <&liimx290_csi_out0>;
+					};
+				};
+                port@1 {
+					reg = <1>;
+					liimx219_vi_in0: endpoint {
+						csi-port = <0>;
+						bus-width = <2>;
+						remote-endpoint = <&liimx219_csi_out0>;
+					};
+				};
+			};
+		};
+
+		nvcsi {
+			num-channels = <2>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			channel@0 {
+				reg = <0>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						liimx290_csi_in0: endpoint@0 {
+							csi-port = <2>;
+							bus-width = <2>;
+							remote-endpoint = <&liimx290_imx290_out0>;
+						};
+					};
+					port@1 {
+						reg = <1>;
+						liimx290_csi_out0: endpoint@1 {
+							remote-endpoint = <&liimx290_vi_in0>;
+						};
+					};
+
+				};
+			};
+			channel@1 {
+				reg = <1>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						liimx219_csi_in0: endpoint@2 {
+							csi-port = <0>;
+							bus-width = <2>;
+							remote-endpoint = <&liimx219_imx219_out0>;
+						};
+					};
+					port@1 {
+						reg = <1>;
+						liimx219_csi_out0: endpoint@3 {
+							remote-endpoint = <&liimx219_vi_in0>;
+						};
+					};
+				};
+			};
+		};
+
+		i2c@546c0000 {
+			avdd_dsi_csi-supply = <&max77620_ldo0>;
+			status="okay";
+
+			imx219_b@10 {
+				compatible = "nvidia,imx219";
+				/* I2C device address */
+				reg = <0x10>;
+
+				/* Physical dimensions of sensor */
+				physical_w = "1.948";
+				physical_h = "1.109";
+
+				/* Define any required hw resources needed by driver */
+				/* ie. clocks, io pins, power sources */
+				/* imx219 sensor board does not get power from Tegra */
+				avdd-reg = "vana"; 
+				iovdd-reg = "vif";
+				sensor_model ="imx219";
+				dvdd-reg = "vdig";
+
+				clocks = <&tegra_car TEGRA210_CLK_CLK_OUT_3>;
+				clock-names = "clk_out_3";
+				clock-frequency = <74250000>;
+				mclk = "clk_out_3";
+				reset-gpios = <&gpio CAM0_RST_L GPIO_ACTIVE_HIGH>;
+				pwdn-gpios = <&gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+				vana-supply = <&en_vdd_cam_hv_2v8>;
+				vif-supply = <&en_vdd_cam>;
+				vdig-supply = <&en_vdd_cam_1v2>;
+
+				/* Defines number of frames to be dropped by driver internally after applying */
+				/* sensor crop settings. Some sensors send corrupt frames after applying */
+				/* crop co-ordinates */
+				post_crop_frame_drop = "0";
+
+				/* if true, delay gain setting by one frame to be in sync with exposure */
+				delayed_gain = "true";
+				/* imx219 3864x2174 mode */
+				mode0 {
+					mclk_khz = "24000";
+					num_lanes = "2";
+					tegra_sinterface = "serial_a";
+					discontinuous_clk = "yes";
+					dpcm_enable = "false";
+					cil_settletime = "0";
+
+					// dynamic_pixel_bit_depth = "12";
+					// csi_pixel_bit_depth = "12";
+					// mode_type = "bayer";
+					// pixel_phase = "rggb";
+					pixel_t = "bayer_rggb";
+
+					active_w = "3280";
+					active_h = "2464";
+					readout_orientation = "0";
+					line_length = "3446";
+					inherent_gain = "1";
+					mclk_multiplier = "25";
+					pix_clk_hz = "170000000";
+
+					min_gain_val = "1";
+					max_gain_val = "16";
+					min_hdr_ratio = "1";
+					max_hdr_ratio = "64";
+					min_framerate = "1.462526";
+					max_framerate = "21";
+					min_exp_time = "13";
+					max_exp_time = "683709";
+
+					// embedded_metadata_height = "2";
+				};
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						liimx219_imx219_out0: endpoint {
+							csi-port = <0>;
+							bus-width = <2>;
+							remote-endpoint = <&liimx219_csi_in0>;
+						};
+					};
+				};
+			};
+
+			imx290_a@1a {
+				compatible = "nvidia,imx290";
+				/* I2C device address */
+				reg = <0x1a>;
+
+				clocks = <&tegra_car TEGRA210_CLK_CLK_OUT_3>;
+				clock-names = "clk_out_3";
+				clock-frequency = <74250000>;
+				mclk = "clk_out_3";
+				reset-gpios = <&gpio CAM0_RST_L GPIO_ACTIVE_HIGH>;
+				pwdn-gpios = <&gpio CAM0_PWDN GPIO_ACTIVE_HIGH>;
+				vana-supply = <&en_vdd_cam_hv_2v8>;
+				vif-supply = <&en_vdd_cam>;
+				vdig-supply = <&en_vdd_cam_1v2>;
+
+				/* Physical dimensions of sensor */
+				physical_w = "1.948";
+				physical_h = "1.109";
+
+				/* Define any required hw resources needed by driver */
+				/* ie. clocks, io pins, power sources */
+				/* imx290 sensor board does not get power from Tegra */
+				avdd-reg = "vana"; 
+				iovdd-reg = "vif";
+				sensor_model ="imx274";
+				/* dvdd-reg = "vdig"; */
+
+				/* Defines number of frames to be dropped by driver internally after applying */
+				/* sensor crop settings. Some sensors send corrupt frames after applying */
+				/* crop co-ordinates */
+				post_crop_frame_drop = "0";
+
+				/* if true, delay gain setting by one frame to be in sync with exposure */
+				delayed_gain = "true";
+				/* imx290 3864x2174 mode */
+				mode0 {
+					mclk_khz = "24000";
+					num_lanes = "2";
+					tegra_sinterface = "serial_c";
+					discontinuous_clk = "yes";
+					dpcm_enable = "false";
+					cil_settletime = "0";
+
+					dynamic_pixel_bit_depth = "12";
+					csi_pixel_bit_depth = "12";
+					mode_type = "bayer";
+					pixel_phase = "rggb";
+					pixel_t = "bayer_rggb";
+
+					active_w = "1948";
+					active_h = "1096";
+					readout_orientation = "0";
+					line_length = "2200";
+					inherent_gain = "1";
+					mclk_multiplier = "25";
+					pix_clk_hz = "148500000";
+
+					min_gain_val = "1";
+					max_gain_val = "30";
+					min_hdr_ratio = "1";
+					max_hdr_ratio = "64";
+					min_framerate = "3";
+					max_framerate = "60";
+					min_exp_time = "14.8";
+					max_exp_time = "16650";
+
+					embedded_metadata_height = "2";
+				};
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						liimx290_imx290_out0: endpoint {
+							csi-port = <2>;
+							bus-width = <2>;
+							remote-endpoint = <&liimx290_csi_in0>;
+						};
+					};
+				};
+			};
+		};
+	};
+};
+
+/* camera control gpio definitions */
+/ {
+
+	tegra-camera-platform {
+		compatible = "nvidia, tegra-camera-platform";
+		/**
+		* Physical settings to calculate max ISO BW
+		*
+		* num_csi_lanes = <>;
+		* Total number of CSI lanes when all cameras are active
+		*
+		* max_lane_speed = <>;
+		* Max lane speed in Kbit/s
+		*
+		* min_bits_per_pixel = <>;
+		* Min bits per pixel
+		*
+		* vi_peak_byte_per_pixel = <>;
+		* Max byte per pixel for the VI ISO case
+		*
+		* vi_bw_margin_pct = <>;
+		* Vi bandwidth margin in percentage
+		*
+		* max_pixel_rate = <>;
+		* Max pixel rate in Kpixel/s for the ISP ISO case
+		*
+		* isp_peak_byte_per_pixel = <>;
+		* Max byte per pixel for the ISP ISO case
+		*
+		* isp_bw_margin_pct = <>;
+		* Isp bandwidth margin in percentage
+		*/
+		num_csi_lanes = <6>;
+		max_lane_speed = <1500000>;
+		min_bits_per_pixel = <10>;
+		vi_peak_byte_per_pixel = <2>;
+		vi_bw_margin_pct = <25>;
+		max_pixel_rate = <750000>;
+		isp_peak_byte_per_pixel = <5>;
+		isp_bw_margin_pct = <25>;
+
+		/**
+		 * The general guideline for naming badge_info contains 3 parts, and is as follows,
+		 * The first part is the camera_board_id for the module; if the module is in a FFD
+		 * platform, then use the platform name for this part.
+		 * The second part contains the position of the module, ex. "rear" or "front".
+		 * The third part contains the last 6 characters of a part number which is found
+		 * in the module's specsheet from the vender.
+		 */
+		modules {
+			module0 {
+				badge = "imx290_top_liimx290";
+				position = "top";
+				orientation = "1";
+				status = "okay";
+				drivernode0 {
+					/* Declare PCL support driver (classically known as guid)  */
+					pcl_id = "v4l2_sensor";
+					/* Driver v4l2 device name */
+					devname = "imx290 6-001a";
+					/* Declare the device-tree hierarchy to driver instance */
+					proc-device-tree = "/proc/device-tree/host1x/i2c@546c0000/imx290_a@1a";
+					status = "okay";
+				};
+			};
+			module1 {
+				badge = "imx219_bottom_imx219";
+				position = "bottom";
+				orientation = "1";
+				status = "okay";
+				drivernode0 {
+					/* Declare PCL support driver (classically known as guid)  */
+					pcl_id = "v4l2_sensor";
+					/* Driver v4l2 device name */
+					devname = "imx219 6-0010";
+					/* Declare the device-tree hierarchy to driver instance */
+					proc-device-tree = "/proc/device-tree/host1x/i2c@546c0000/imx219_b@10";
+					status = "okay";
+				};
+			};
+
+		};
+	};
+};
