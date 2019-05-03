@@ -338,7 +338,7 @@
 				badge = "imx219_bottom_imx219";
 				position = "bottom";
 				orientation = "1";
-				status = "okay";
+				status = "disabled";
 				drivernode0 {
 					/* Declare PCL support driver (classically known as guid)  */
 					pcl_id = "v4l2_sensor";
