@@ -287,7 +287,7 @@ static int imx290_power_on(struct camera_common_data *s_data)
 	if (pw->af_gpio)
 		gpio_direction_output(pw->af_gpio, 1);
 	if (pw->pwdn_gpio)
-		gpio_direction_output(pw->pwdn_gpio, 0);
+		gpio_direction_output(pw->pwdn_gpio, 1);
 	usleep_range(10, 20);
 
 
@@ -311,7 +311,7 @@ static int imx290_power_on(struct camera_common_data *s_data)
 	if (pw->reset_gpio)
 		gpio_direction_output(pw->reset_gpio, 1);
 	if (pw->pwdn_gpio)
-		gpio_direction_output(pw->pwdn_gpio, 1);
+		gpio_direction_output(pw->pwdn_gpio, 0);
 
 	usleep_range(300, 310);
 
