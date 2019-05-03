@@ -346,7 +346,7 @@
 					devname = "imx219 6-0010";
 					/* Declare the device-tree hierarchy to driver instance */
 					proc-device-tree = "/proc/device-tree/host1x/i2c@546c0000/imx219_b@10";
-					status = "okay";
+					status = "disabled";
 				};
 			};
 
