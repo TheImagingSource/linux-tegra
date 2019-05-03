@@ -98,7 +98,7 @@
 
 		i2c@546c0000 {
 			avdd_dsi_csi-supply = <&max77620_ldo0>;
-			status="okay";
+			status="disabled";
 
 			imx219_b@10 {
 				compatible = "nvidia,imx219";
