@@ -1,0 +1,35 @@
+#include <dt-bindings/platform/t210/t210.h>
+
+
+/ {
+	host1x {
+		i2c@546c0000 {
+            clock-frequency = <100000>;
+
+            // Connected to IMX290
+            tis_fpdlink-deser@32 {
+                compatible = "tis,tis-fpdlink", "tis,tis-fpdlink-deser";
+                status = "okay";
+				reg = <0x32>;
+                clkout_ctrl1 = /bits/ 8 <0x41>;
+                clkout_ctrl2 = /bits/ 8 <0x19>;
+                slave_addr = /bits/ 8 <0x1a>;
+                slave_map_addr = /bits/ 8 <0x1a>;
+                ser_map_addr = /bits/ 8 <0x18>;
+            };
+
+            // Connected to IMX219
+            tis_fpdlink-deser@30 {
+                compatible = "tis,tis-fpdlink", "tis,tis-fpdlink-deser";
+                status = "okay";
+				reg = <0x30>;
+                clkout_ctrl1 = /bits/ 8 <0x21>;
+                clkout_ctrl2 = /bits/ 8 <0x28>;
+                slave_addr = /bits/ 8 <0x10>;
+                slave_map_addr = /bits/ 8 <0x10>;
+                ser_map_addr = /bits/ 8 <0x20>;
+                ser_i2c_setup = /bits/ 8 <0x0d 0x0 0x0e 0x03>;
+            };
+        };
+    };
+};
